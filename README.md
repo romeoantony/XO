@@ -45,7 +45,7 @@ npm run dev
 
 ## 🎯 How to Play
 
-1. The game is played on a 3x3 grid
+1. The game is played on a 3x3 grid.
 2. Players take turns placing their mark (X or O)
 3. The first player to get 3 marks in a row (horizontally, vertically, or diagonally) wins
 4. If all 9 squares are filled and no player has won, the game is a draw
