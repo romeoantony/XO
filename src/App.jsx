@@ -144,6 +144,10 @@ function App() {
         </div>
       </div>
 
+      <footer className="game-footer">
+        <p>Made using Google's Antigravity</p>
+      </footer>
+
       {showWinnerModal && (
         <div className="winner-announcement">
           <div className="winner-modal">

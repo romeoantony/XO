@@ -187,6 +187,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Design inspired by modern web design trends
 - Built with ❤️ using React and Vite
+- Made using Google's Antigravity
 
 ## 📧 Contact
 
