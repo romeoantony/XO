@@ -4,6 +4,7 @@ import './App.css';
 function App() {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState(true);
+  const [gameStarter, setGameStarter] = useState('X'); // Track who starts the current game
   const [scores, setScores] = useState({ X: 0, O: 0, draws: 0 });
   const [winner, setWinner] = useState(null);
   const [winningLine, setWinningLine] = useState([]);
@@ -63,7 +64,10 @@ function App() {
   // Reset current game
   const resetGame = () => {
     setBoard(Array(9).fill(null));
-    setIsXNext(true);
+    // Alternate starter
+    const nextStarter = gameStarter === 'X' ? 'O' : 'X';
+    setGameStarter(nextStarter);
+    setIsXNext(nextStarter === 'X');
     setWinner(null);
     setWinningLine([]);
     setShowWinnerModal(false);
@@ -72,7 +76,13 @@ function App() {
   // Reset all scores
   const resetScores = () => {
     setScores({ X: 0, O: 0, draws: 0 });
-    resetGame();
+    // Reset starter to X for a fresh start
+    setGameStarter('X');
+    setBoard(Array(9).fill(null));
+    setIsXNext(true);
+    setWinner(null);
+    setWinningLine([]);
+    setShowWinnerModal(false);
   };
 
   // Play again (from modal)
@@ -98,6 +108,12 @@ function App() {
     );
   };
 
+  const getPlayerName = (symbol) => {
+    if (symbol === 'X') return 'Player 1';
+    if (symbol === 'O') return 'Player 2';
+    return symbol;
+  };
+
   return (
     <div className="xo-game">
       <div className="game-header">
@@ -109,14 +125,19 @@ function App() {
         <div className="game-info">
           <div className="current-player">
             <span>Current Player:</span>
-            <div className={`player-indicator player-${isXNext ? 'x' : 'o'}`}>
-              {isXNext ? 'X' : 'O'}
+            <div className="player-display">
+              <span className={`player-name ${isXNext ? 'player-x' : 'player-o'}`}>
+                {isXNext ? 'Player 1' : 'Player 2'}
+              </span>
+              <div className={`player-indicator player-${isXNext ? 'x' : 'o'}`}>
+                {isXNext ? 'X' : 'O'}
+              </div>
             </div>
           </div>
 
           <div className="score-board">
             <div className="score-item player-x">
-              <span className="score-label">Player X</span>
+              <span className="score-label">Player 1 (X)</span>
               <span className="score-value">{scores.X}</span>
             </div>
             <div className="score-item draws">
@@ -124,7 +145,7 @@ function App() {
               <span className="score-value">{scores.draws}</span>
             </div>
             <div className="score-item player-o">
-              <span className="score-label">Player O</span>
+              <span className="score-label">Player 2 (O)</span>
               <span className="score-value">{scores.O}</span>
             </div>
           </div>
@@ -155,12 +176,12 @@ function App() {
               {winner === 'draw' ? '🤝' : '🎉'}
             </div>
             <h2 className={`winner-text ${winner === 'draw' ? 'draw' : `player-${winner.toLowerCase()}`}`}>
-              {winner === 'draw' ? "It's a Draw!" : `Player ${winner} Wins!`}
+              {winner === 'draw' ? "It's a Draw!" : `${getPlayerName(winner)} Wins!`}
             </h2>
             <p className="winner-subtitle">
               {winner === 'draw'
                 ? 'Well played by both players!'
-                : `Congratulations! Player ${winner} takes the victory!`}
+                : `Congratulations! ${getPlayerName(winner)} takes the victory!`}
             </p>
             <div className="modal-buttons">
               <button className="game-button primary" onClick={playAgain}>
